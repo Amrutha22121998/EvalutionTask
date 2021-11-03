@@ -1,6 +1,8 @@
 import java.io.File;
+import java.net.URL;
 import java.util.List;
 
+import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -17,19 +19,14 @@ public class TestClass {
 		String nameNoSpace = req.trim().toUpperCase();
 		System.out.println(nameNoSpace);
 		try {
-			File file = new File("D:\\EvaluationTask\\Individual.xml");
-			JAXBContext jaxbContext = JAXBContext.newInstance(ConsolidatedList.class);
-			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-			ConsolidatedList consoilderatedList = (ConsolidatedList) jaxbUnmarshaller.unmarshal(file);
+
+			URL url = new URL("https://scsanctions.un.org/resources/xml/en/consolidated.xml");
+			ConsolidatedList consoilderatedList = JAXB.unmarshal(url, ConsolidatedList.class);
 			System.out.println(consoilderatedList);
 			Individuals test = consoilderatedList.getIndividuals();
 			System.out.println(test);
 			List<Individual> individualList = consoilderatedList.getIndividuals().getIndividual();
 			System.out.println(individualList.size());
-//			 String secondName;
-//			 String thirdName;
-//			 String fourthName;
-
 			for (Individual individual : individualList) {
 				String firstName = individual.getFirstName().trim();
 				String secondName = individual.getSecondName();

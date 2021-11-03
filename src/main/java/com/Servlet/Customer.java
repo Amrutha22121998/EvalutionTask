@@ -1,9 +1,9 @@
 package com.Servlet;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,8 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.JAXB;
 
 import org.apache.log4j.Logger;
 import org.json.JSONException;
@@ -68,10 +67,8 @@ public class Customer extends HttpServlet {
 
 		log.info(nameNoSpace);
 		try {
-			File file = new File("D:\\EvaluationTask\\Individual.xml");
-			JAXBContext jaxbContext = JAXBContext.newInstance(ConsolidatedList.class);
-			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-			ConsolidatedList consoilderatedList = (ConsolidatedList) jaxbUnmarshaller.unmarshal(file);
+			URL url = new URL("https://scsanctions.un.org/resources/xml/en/consolidated.xml");
+			ConsolidatedList consoilderatedList = JAXB.unmarshal(url, ConsolidatedList.class);
 			List<Individual> individualList = consoilderatedList.getIndividuals().getIndividual();
 			for (Individual individual : individualList) {
 				String firstName = individual.getFirstName().trim();
